@@ -3,7 +3,7 @@ import Authlayout from "../components/Layouts/AuthLayout";
 
 const SignUpPage = () => {
   return (
-    <Authlayout title="sign up">
+    <Authlayout type="signup">
       <FormSignUp />
     </Authlayout>
   );

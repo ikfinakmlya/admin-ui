@@ -1,20 +1,21 @@
+import React from 'react'
+
 const CheckBox = (props) => {
-    const {label, name} = props;
-
+    const { label, name } = props;
+  
     return (
-        <div className="mb-6">
-            <input
-            type="checkbox"
-            className="text-sm py-2 text-slate-700 accent-primary"
-            name = {name}
-            id = {name}
-            />
-            <label htmlFor={name} className="ps-3 text-sm text-slate-700">
-                {label}
-            </label>
-        </div>
+      <>
+        <input
+          type="checkbox"
+          className="text-sm accent-primary"
+          name={name}
+          id={name}
+        />
+        <label htmlFor={name} className="text-sm text-gray-01 ms-6">
+          {label}
+        </label>
+      </>
     );
-};
-
-
-export default CheckBox;
+  };
+  
+  export default CheckBox;

@@ -33,4 +33,4 @@ const FormSignIn = () => {
   );
 }
 
-export default FormSignIn
+export default FormSignIn;

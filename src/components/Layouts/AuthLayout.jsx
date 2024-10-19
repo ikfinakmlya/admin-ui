@@ -98,16 +98,25 @@ const AuthLayout = (props) => {
         <div className="flex justify-center">
             {type == "signin" ? (
                 <>
-                    <span className="text-sm text-gray-03">
-                        Already have an account?&nbsp;
-                    </span>
-                    <Link to='/register' className="text-primary text-sm font-bold">Create an account</Link>
+                  <div className="flex flex-col">
+                    <div className="flex justify-center">
+                      <span className="text-sm text-gray-03">
+                          Already have an account?&nbsp;
+                      </span>
+                      <Link to='/register' className="text-primary text-sm font-bold">Create an account</Link>
+                    </div>
+                    <div className="flex justify-center mt-3">
+                    <Link to='/forgotpassword' className="text-gray-02 text-sm font-bold">Forgot Password</Link>
+                    </div>
+                  </div>
                 </>
-            ) : (
+            ) : type == "signup" ? (
               <Link to='/login'className="text-primary text-sm font-bold">Sign In Here</Link>
+            ) : (
+              <Link to='/login'className="text-gray-500 text-sm font-bold">Back to login</Link>
             )
             }
-            </div>
+        </div>
         {/* link end */}
       </div>
       {/* container end */}

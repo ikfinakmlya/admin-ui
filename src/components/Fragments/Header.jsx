@@ -1,7 +1,9 @@
-import Input from "../Elements/LabeledInput/Input";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
-const Header = () => {
+import Input from '../Elements/LabeledInput/Input';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+
+export const Header = () => {
+
   const date = new Date().toDateString().slice(4);
 
   return (
@@ -19,7 +21,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
-};
+  )
+}
 
 export default Header;

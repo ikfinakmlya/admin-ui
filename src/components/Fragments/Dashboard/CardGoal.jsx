@@ -1,10 +1,11 @@
 import { goals } from "../../../data/goals";
 import Card from "../../Elements/Card";
 import CompositionExample from "../../Elements/GaugeChart";
-import { Icon } from "../../Elements/Icon";
+import { Icon } from "../../Elements/Icons";
 
 const CardGoal = () => {
-  const chartValue = goals.presentAmount * 100 / goals.targetAmount;
+
+    const chartValue = goals.presentAmount * 100 / goals.targetAmount;
 
   return (
     <Card

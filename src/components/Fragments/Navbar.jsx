@@ -1,8 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Icon } from "../Elements/Icons";
 import Logo from '../Elements/Logo';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/themeContext';
+import axios from 'axios';
+import { AuthContext } from '../../context/authContext';
 
 export const Navbar = () => {
 
@@ -15,6 +17,8 @@ export const Navbar = () => {
   ];
   
   const {theme, setTheme} = useContext(ThemeContext);
+  const { setIsLoggedIn, setName, name} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const menus = [
     {
@@ -61,62 +65,90 @@ export const Navbar = () => {
     },
   ];
 
+  const refreshToken = localStorage.getItem("refreshToken");
+
+const Logout = async () => {
+    try {
+      await axios.get("https://jwt-auth-eight-neon.vercel.app/logout", {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      });
+
+      setIsLoggedIn(false);
+      setName("");
+      localStorage.removeItem("refreshToken");
+
+      navigate("/login");
+    } catch (error) {
+      setIsLoading(false);
+
+      if (error.response) {
+        setOpen(true);
+        setMsg({ severity: "error", desc: error.response.data.msg });
+      }
+    }
+  };
+
   return (
     <div className="bg-defaultBlack">
-    <nav className="bg-defaultBlack sticky top-0 text-special-bg2 sm:w-72 w-28 min-h-screen px-7 py-12 flex flex-col justify-between">
-      <div>
-      <div className="flex justify-center mb-10">
-          <Logo variant="text-primary text-sm sm:text-8x1" />
-        </div>
-        {menus.map((menu) => (
-          <NavLink 
-            key={menu.id} 
-            to={menu.link}
-            className={({ isActive }) => 
-              isActive
-              ? "flex bg-primary text-white font-bold px-4 py-3 rounded-md"
-              : "flex hover:bg-special-bg3 hover:text-white px-4 py-3 rounded-md"
-            }
-          >
-            <div className="mx-auto sm:mx-0">{menu.icon}</div>
-            <div className="ms-3 hidden sm:block">{menu.label}</div>
-          </NavLink>
-        ))}
-      </div>
-      <div className="md:flex md:gap-2">
-        Themes
-        {themes.map((t) => (
-          <div
-            key={t.name}
-            className={`${t.bgcolor} md:w-6 h-6 rounded-md cursor-pointer mb-2`}
-            onClick={() => setTheme(t)}
-          ></div>
-        ))}
-      </div>
-      <div className="sticky bottom-12">
-        <NavLink to="/logout" className="flex bg-special-bg3 px-4 py-3 rounded-md">
-          <div className="mx-auto sm:mx-0 text-primary">
-            <Icon.Logout />
+      <nav className="bg-defaultBlack sticky top-0 text-special-bg2 sm:w-72 w-28 min-h-screen px-7 py-12 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-center mb-10">
+            <Logo variant="text-primary text-sm sm:text-8x1" />
           </div>
-          <div className="ms-3 hidden sm:block">Logout</div>
-        </NavLink>
+          {menus.map((menu) => (
+            <NavLink
+              key={menu.id}
+              to={menu.link}
+              className={({ isActive }) =>
+                isActive
+                  ? "flex bg-primary text-white font-bold px-4 py-3 rounded-md"
+                  : "flex hover:bg-special-bg3 hover:text-white px-4 py-3 rounded-md"
+              }
+            >
+              <div className="mx-auto sm:mx-0">{menu.icon}</div>
+              <div className="ms-3 hidden sm:block">{menu.label}</div>
+            </NavLink>
+          ))}
+        </div>
+        <div className="md:flex md:gap-2">
+          Themes
+          {themes.map((t) => (
+            <div
+              key={t.name}
+              className={`${t.bgcolor} md:w-6 h-6 rounded-md cursor-pointer mb-2`}
+              onClick={() => setTheme(t)}
+            ></div>
+          ))}
+        </div>
+        <div>
+          <NavLink
+            onClick={Logout}
+            className="flex bg-special-bg3 px-4 py-3 rounded-sm hover:text-white"
+          >
+            <div className="mx-auto sm:mx-0 text-primary">
+              <Icon.Logout />
+            </div>
+            <div className="ms-3 hidden sm:block">Logout</div>
+          </NavLink>
+        </div>
         <div className="border-b my-10 border-b-special-bg"></div>
         <div className="flex justify-between">
           <div className="mx-auto sm:mx-0 self-center">
             <img src="Images/profile.png" alt="Profile" />
           </div>
           <div className="hidden sm:block">
-            <div className="text-white font-bold">Username</div>
+            <div className="text-white font-bold">{name}</div>
             <div className="text-xs">View Profile</div>
           </div>
           <div className="hidden sm:block self-center justify-end">
             <Icon.KebabMenu />
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
     </div>
   );
-};
+};  
 
 export default Navbar;

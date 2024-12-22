@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
 import ErrorRoute from "./pages/errorRoute";
@@ -7,12 +7,20 @@ import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
 import ExpensesPage from "./pages/expenses";
 import GoalPage from "./pages/goals";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
 
 const App = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+
+  const RequiredAuth = ({children}) => {
+    return isLoggedIn ? children : <Navigate to="/login" />
+  };
+
   const myRouter = createBrowserRouter([
     {
       path: "/",
-      element: <DashboardPage/>,
+      element: <RequiredAuth><DashboardPage/> </RequiredAuth>,
       errorElement: <ErrorRoute/>
     },
     {
@@ -30,15 +38,15 @@ const App = () => {
     },
     {
       path: "/balance",
-      element: <BalancePage/>
+      element: <RequiredAuth><BalancePage/></RequiredAuth>
     },
     {
       path: "/expenses",
-      element: <ExpensesPage/>
+      element: <RequiredAuth><ExpensesPage/></RequiredAuth>
     },
     {
       path: "/goals",
-      element: <GoalPage/>
+      element: <RequiredAuth><GoalPage/></RequiredAuth>
     }
   ]);
 

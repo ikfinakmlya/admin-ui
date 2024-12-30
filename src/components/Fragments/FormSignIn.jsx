@@ -8,12 +8,15 @@ import CustomizedSnackbars from '../Elements/SnackBar';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
+import { NotifContext } from '../../context/notifContext';
 
 
 const FormSignIn = () => {
-  const [msg,setMsg] = useState("");
-  const [open, setOpen] = useState(true);
+  const { msg, setMsg, setOpen, setIsLoading } = useContext(NotifContext);
   const { setIsLoggedIn, setName } = useContext(AuthContext);
+  // const [msg,setMsg] = useState("");
+  // const [open, setOpen] = useState(true);
+  // const { setIsLoggedIn, setName } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -26,6 +29,7 @@ const FormSignIn = () => {
   });
 
   const onFormSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://jwt-auth-eight-neon.vercel.app/login",
@@ -34,21 +38,22 @@ const FormSignIn = () => {
           password: data.password,
         }
       );
-      
-      const decode = jwtDecode(response.data.refreshToken);
-      //console.log(decode);
 
+      setIsLoading(false);
       setOpen(true);
       setMsg({ severty: "success", desc: "Login Success"});
-
+      
+      setIsLoggedIn(true);
       localStorage.setItem("refreshToken", response.data.refreshToken);
 
-      setIsLoggedIn(true);
+      const decode = jwtDecode(response.data.refreshToken);
       setName(decode.name);
 
       navigate("/");
 
     } catch (error) {
+      setIsLoading(false);
+
       if (error.response) {
         setOpen(true);
         setMsg( {severity: "error", desc : error.response.data.msg});
@@ -94,11 +99,9 @@ const FormSignIn = () => {
       <div className="mb-3">
         <CheckBox label="Keep me signed in" name="status" />
       </div>
-      <Button variant={
-        !isValid 
-          ? "bg-gray-05 w-full text-white"
-          : "bg-primary w-full text-white"
-      } 
+      <Button 
+        variant={`${!isValid ? "bg-gray-05" : "bg-primary zoom-in"}
+                w-full text-white`}
       type="submit"
       disable={!isValid ? "disable" : ""}
       >

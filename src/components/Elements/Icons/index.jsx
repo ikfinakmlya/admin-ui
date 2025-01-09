@@ -342,6 +342,15 @@ const Award = () => (
   </IconWrapper>
 )
 
+const ArrowUpRight = () => (
+  <IconWrapper>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.66669 11.3333L11.3334 4.66667" stroke="#299D91" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66669 4.66667H11.3334V11.3333" stroke="#299D91" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  </IconWrapper>
+)
+
 export const Icon = {
   Overview: OverviewIcon,
   Balance: BalanceIcon,
@@ -364,4 +373,5 @@ export const Icon = {
   Edit: Edit,
   Target: Target,
   Award: Award,
+  ArrowUpRight: ArrowUpRight,
 };

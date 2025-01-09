@@ -42,7 +42,7 @@ const CardBalance = () => {
                         ${account.balance}
                     </span>
                     <div className="bg-white max-w-min rounded-full ps-1 pt-1 ms-4">
-                        <Icon.ArrowUp />
+                        <Icon.ArrowUpRight />
                     </div>
                 </div>
             </div>

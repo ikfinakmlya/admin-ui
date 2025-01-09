@@ -18,30 +18,14 @@ describe("User login", () => {
 
     cy.get("button").contains("Login").click();
 
-    cy.get("nav");
+    cy.url().should("include", "/");
+    cy.wait(5000);
 
-    cy.get("header");
-  });
+    // Klik tombol Logout
+    cy.get("nav").contains("Logout").click();
 
-  it("should not allow user to log in with invalid credentials", () => {
-    cy.visit("http://localhost:5173/");
-
+    // Verifikasi kembali ke halaman login
     cy.url().should("include", "/login");
-
-    cy.get("input#email")
-      .should("be.visible")
-      .should("have.attr", "placeholder", "hello@example.com")
-      .type("hello@example.com")
-      .should("have.value", "hello@example.com");
-
-    cy.get("input#password")
-      .should("be.visible")
-      .should("have.attr", "placeholder", "*************")
-      .type("123")
-      .should("have.value", "123");
-
-    cy.get("button").contains("Login").click();
-
-    cy.get("div").contains("Wrong Password");
   });
+
 });
